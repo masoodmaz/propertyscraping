@@ -1,0 +1,15 @@
+.env
+node_modules/
+server.err.log
+server.out.log
+saved-searches.json
+subscriptions.json
+user-profiles.json
+
+# Terraform local state and secrets
+infra/**/.terraform/
+infra/**/.terraform.lock.hcl
+infra/**/*.tfstate
+infra/**/*.tfstate.*
+infra/**/terraform.tfvars
+infra/**/terraform.tfvars.json

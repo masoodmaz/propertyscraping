@@ -1,0 +1,24 @@
+tenancy_ocid        = "ocid1.tenancy.oc1..replace-me"
+user_ocid           = "ocid1.user.oc1..replace-me"
+fingerprint         = "aa:bb:cc:dd:ee:ff:replace-me"
+private_key_path    = "C:/Users/masoo/.oci/oci_api_key.pem"
+region              = "uk-london-1"
+compartment_ocid    = "ocid1.compartment.oc1..replace-me"
+ssh_public_key_path = "C:/Users/masoo/.ssh/id_rsa.pub"
+ssh_allowed_cidr    = "YOUR_PUBLIC_IP/32"
+
+app_repo_url    = "https://github.com/YOUR_GITHUB_USER/propertyscraping.git"
+app_repo_branch = "main"
+
+# Use http://PUBLIC_IP at first, then change to https://your-domain.com after DNS is set.
+auth_base_url       = "http://replace-with-public-ip-after-apply"
+auth_allowed_emails = "siham.aliyun@gmail.com"
+
+google_client_id     = "replace-me.apps.googleusercontent.com"
+google_client_secret = "replace-me"
+telegram_bot_api     = "YOUR_TELEGRAM_BOT_TOKEN"
+
+# Optional HTTPS. Only enable after DNS points to the VM public IP.
+domain_names  = []
+enable_https  = false
+certbot_email = ""

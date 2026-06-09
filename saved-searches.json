@@ -1,29 +1,5 @@
 [
   {
-    "id": "5e8f65d4-ca65-4a7c-b187-ee9c1918a241",
-    "userEmail": "masood.mazhar@gmail.com",
-    "createdAt": "2026-06-08T10:29:04.301Z",
-    "updatedAt": "2026-06-08T10:36:05.916Z",
-    "name": "Heald Green",
-    "location": "Heald Green",
-    "radius": "0",
-    "criteria": [
-      "Cash buyers",
-      "Needs Refurbishment"
-    ],
-    "sources": [
-      "Rightmove"
-    ],
-    "minPrice": "",
-    "maxPrice": "",
-    "beds": 0,
-    "sort": "priceAsc",
-    "telegramChatId": "1568809920",
-    "notifyFrequency": "now",
-    "lastNotifiedAt": "2026-06-08T10:29:05.646Z",
-    "seenProperties": []
-  },
-  {
     "id": "9e561b5f-d21a-483e-807f-9df6d2d9248b",
     "userEmail": "siham.aliyun@gmail.com",
     "createdAt": "2026-06-09T10:19:02.111Z",
@@ -64,6 +40,35 @@
       "87523797",
       "174107138",
       "168322775"
+    ]
+  },
+  {
+    "id": "4773849a-ce63-4be5-9361-d701c1989c79",
+    "userEmail": "masood.mazhar@gmail.com",
+    "createdAt": "2026-06-09T14:18:08.575Z",
+    "updatedAt": "2026-06-09T14:18:08.575Z",
+    "name": "Heald Green",
+    "location": "Heald Green",
+    "radius": "0",
+    "criteria": [
+      "Cash buyers",
+      "Needs Refurbishment"
+    ],
+    "sources": [
+      "Rightmove"
+    ],
+    "minPrice": "",
+    "maxPrice": 400000,
+    "beds": 0,
+    "minBeds": 0,
+    "maxBeds": "",
+    "propertyType": "",
+    "sort": "priceAsc",
+    "telegramChatId": "",
+    "notifyFrequency": "minutely",
+    "lastNotifiedAt": "2026-06-09T14:18:48.820Z",
+    "seenProperties": [
+      "171294689"
     ]
   }
 ]

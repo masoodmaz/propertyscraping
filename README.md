@@ -1,4 +1,4 @@
-# Property Scraper
+# Property Finder
 
 A local web app for searching and reviewing property listings from Rightmove and Zoopla-style searches.
 
@@ -95,7 +95,8 @@ Saved searches are stored in `saved-searches.json` and scoped to the signed-in G
 
 `Now` sends a Telegram digest immediately after saving and then stores the search with notifications off. `Daily` and `Weekly` are checked by the server once per hour and only send newly seen matching listings.
 
-## Scraper note
+
+## Scraper Note (Implementation Details)
 
 Live scraping is handled through a server-side connector that should be used in line with each site's terms, rate limits, robots rules, and data-use requirements. Rightmove is implemented first because its search page exposes listing state through `__NEXT_DATA__`; Zoopla remains represented by demo fallback records until a compliant connector is added.
 

@@ -1,0 +1,10 @@
+.git
+.env
+node_modules
+server.err.log
+server.out.log
+infra
+vendor
+saved-searches.json
+subscriptions.json
+user-profiles.json

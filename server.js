@@ -22,10 +22,15 @@ loadEnvFile(root);
 const port = Number(process.env.PORT || 3000);
 
 const TELEGRAM_BOT_API = process.env.TELEGRAM_BOT_API || "YOUR_TELEGRAM_BOT_TOKEN";
-const SUBSCRIPTIONS_FILE = path.join(root, "subscriptions.json");
-const SAVED_SEARCHES_FILE = path.join(root, "saved-searches.json");
+const dataRoot = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : root;
+fs.mkdir(dataRoot, { recursive: true }).catch(error => {
+  console.error("Could not create data directory:", error.message);
+});
 
-const USER_PROFILES_FILE = path.join(root, "user-profiles.json");
+const SUBSCRIPTIONS_FILE = path.join(dataRoot, "subscriptions.json");
+const SAVED_SEARCHES_FILE = path.join(dataRoot, "saved-searches.json");
+
+const USER_PROFILES_FILE = path.join(dataRoot, "user-profiles.json");
 
 const contentTypes = {
   ".html": "text/html; charset=utf-8",
@@ -69,7 +74,7 @@ function loginPage(message = "") {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sign in - Property Scraper</title>
+    <title>Sign in - Property Finder</title>
     <style>
       :root { font-family: Arial, Helvetica, sans-serif; color: #17212b; background: #eef3f6; }
       body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; }
@@ -85,7 +90,7 @@ function loginPage(message = "") {
   <body>
     <main>
       <h1>Sign in</h1>
-      <p>Use your Google account to access Property Scraper.</p>
+      <p>Use your Google account to access Property Finder.</p>
       ${setupMessage}
       ${messageHtml}
       <a class="button" href="/auth/google">Continue with Google</a>
@@ -208,11 +213,22 @@ function listingMatchesSavedSearch(listing, search) {
 async function sendTelegramMessage(chatId, text) {
   if (TELEGRAM_BOT_API !== "YOUR_TELEGRAM_BOT_TOKEN") {
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_API}/sendMessage`;
-    await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text })
-    });
+    let response;
+    try {
+      response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, text })
+      });
+    } catch (error) {
+      const cause = error?.cause?.code || error?.cause?.message || error?.message || "unknown network error";
+      throw new Error(`Telegram send fetch failed: ${cause}`);
+    }
+
+    if (!response.ok) {
+      const payload = await readJsonResponse(response);
+      throw new Error(`Telegram send returned HTTP ${response.status}: ${payload.description || payload.error || "Unknown Telegram response"}`);
+    }
   } else {
     console.log(`[Telegram Simulation to ${chatId}]`, text.replace(/\n/g, " "));
   }
@@ -634,7 +650,12 @@ async function checkSavedSearchNotifications() {
       const result = await notifySavedSearch(search);
       if (result.sent) updated = true;
     } catch (error) {
-      console.error("Saved search notification error for", search.userEmail, error.message);
+      console.error(
+        "Saved search notification error for",
+        search.userEmail,
+        `[${search.name || search.location || search.id}]`,
+        error.stack || error.message
+      );
     }
   }
 
@@ -646,6 +667,6 @@ setInterval(checkSubscriptions, 60000);
 setInterval(checkSavedSearchNotifications, 60000);
 
 server.listen(port, () => {
-  console.log(`Property app running at http://localhost:${port}`);
+  console.log(`Property Finder running at http://localhost:${port}`);
   console.log(`Telegram alerts: ${TELEGRAM_BOT_API !== "YOUR_TELEGRAM_BOT_TOKEN" ? "Enabled" : "Mock Mode"}`);
 });
