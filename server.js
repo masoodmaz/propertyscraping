@@ -116,14 +116,14 @@ function loginPage(message = "") {
       main {
         display: grid;
         min-height: 100vh;
-        padding: 32px clamp(20px, 6vw, 76px);
+        padding: 22px clamp(18px, 5vw, 64px);
       }
 
       .landing {
         align-content: center;
         display: grid;
-        gap: 30px;
-        max-width: 760px;
+        gap: 18px;
+        max-width: 720px;
       }
 
       .brand {
@@ -141,23 +141,23 @@ function loginPage(message = "") {
         color: #10241f;
         display: inline-flex;
         font-weight: 900;
-        height: 42px;
+        height: 36px;
         justify-content: center;
-        width: 42px;
+        width: 36px;
       }
 
       h1 {
-        font-size: clamp(2.5rem, 6vw, 5.8rem);
+        font-size: clamp(2.25rem, 5.1vw, 4.8rem);
         letter-spacing: 0;
-        line-height: 0.95;
+        line-height: 0.98;
         margin: 0;
         max-width: 720px;
       }
 
       .lead {
         color: rgba(247, 251, 249, 0.86);
-        font-size: clamp(1.05rem, 2vw, 1.28rem);
-        line-height: 1.55;
+        font-size: clamp(1rem, 1.65vw, 1.18rem);
+        line-height: 1.42;
         margin: 0;
         max-width: 640px;
       }
@@ -177,8 +177,8 @@ function loginPage(message = "") {
         display: inline-flex;
         font-weight: 900;
         gap: 12px;
-        min-height: 54px;
-        padding: 0 22px;
+        min-height: 48px;
+        padding: 0 20px;
         text-decoration: none;
       }
 
@@ -196,13 +196,13 @@ function loginPage(message = "") {
 
       .trust {
         color: rgba(247, 251, 249, 0.72);
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         font-weight: 700;
       }
 
       .feature-row {
         display: grid;
-        gap: 12px;
+        gap: 10px;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         max-width: 720px;
       }
@@ -210,8 +210,9 @@ function loginPage(message = "") {
       .feature {
         border-left: 3px solid #d9f99d;
         color: rgba(247, 251, 249, 0.82);
-        line-height: 1.4;
-        padding-left: 14px;
+        font-size: 0.92rem;
+        line-height: 1.3;
+        padding-left: 12px;
       }
 
       .feature strong {
@@ -248,7 +249,7 @@ function loginPage(message = "") {
         }
 
         main {
-          padding: 24px 18px;
+          padding: 18px;
         }
 
         .feature-row {
@@ -267,7 +268,7 @@ function loginPage(message = "") {
       <section class="landing" aria-label="Property Finder sign in">
         <div class="brand"><span class="mark">PF</span><span>Property Finder</span></div>
         <h1>Find motivated property opportunities faster.</h1>
-        <p class="lead">Search Rightmove listings by location, radius, price, bedrooms, and buying signals like cash buyers, probate, and reduced properties. Save searches and receive Telegram alerts when new matches appear.</p>
+        <p class="lead">Search Rightmove by location, radius, price, bedrooms, and buying signals like cash buyers, probate, and reduced properties. Save searches and get Telegram alerts.</p>
         ${setupMessage}
         ${messageHtml}
         <div class="actions">
