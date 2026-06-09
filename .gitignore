@@ -5,6 +5,9 @@ server.out.log
 saved-searches.json
 subscriptions.json
 user-profiles.json
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
 
 # Terraform local state and secrets
 infra/**/.terraform/

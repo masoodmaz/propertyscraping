@@ -4,6 +4,7 @@ const fs = require("node:fs/promises");
 const path = require("node:path");
 const { URL } = require("node:url");
 const { buildRightmoveSearchUrl, searchRightmove } = require("./lib/rightmove");
+const { createSavedSearchStore } = require("./lib/savedSearchStore");
 const { toUkPropertyCliOutput } = require("./lib/ukPropertyCliAdapter");
 const {
   clearSession,
@@ -28,9 +29,14 @@ fs.mkdir(dataRoot, { recursive: true }).catch(error => {
 });
 
 const SUBSCRIPTIONS_FILE = path.join(dataRoot, "subscriptions.json");
-const SAVED_SEARCHES_FILE = path.join(dataRoot, "saved-searches.json");
+const LEGACY_SAVED_SEARCHES_FILE = path.join(dataRoot, "saved-searches.json");
 
-const USER_PROFILES_FILE = path.join(dataRoot, "user-profiles.json");
+const LEGACY_USER_PROFILES_FILE = path.join(dataRoot, "user-profiles.json");
+const savedSearchStore = createSavedSearchStore({
+  dataRoot,
+  legacyJsonPath: LEGACY_SAVED_SEARCHES_FILE,
+  legacyProfilesPath: LEGACY_USER_PROFILES_FILE
+});
 
 const contentTypes = {
   ".html": "text/html; charset=utf-8",
@@ -124,30 +130,19 @@ async function saveSubscriptions(subs) {
 }
 
 async function getUserProfiles() {
-  try {
-    const data = await fs.readFile(USER_PROFILES_FILE, "utf-8");
-    return JSON.parse(data);
-  } catch (error) {
-    if (error.code === "ENOENT") return [];
-    throw error;
-  }
+  return savedSearchStore.getProfiles();
 }
 
 async function saveUserProfiles(profiles) {
-  await fs.writeFile(USER_PROFILES_FILE, JSON.stringify(profiles, null, 2), "utf-8");
+  savedSearchStore.saveProfiles(profiles);
 }
 
 async function getSavedSearches() {
-  try {
-    const data = await fs.readFile(SAVED_SEARCHES_FILE, "utf-8");
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
+  return savedSearchStore.getAll();
 }
 
 async function saveSavedSearches(searches) {
-  await fs.writeFile(SAVED_SEARCHES_FILE, JSON.stringify(searches, null, 2));
+  savedSearchStore.saveAll(searches);
 }
 
 function cleanSavedSearch(body) {
