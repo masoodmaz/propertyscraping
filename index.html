@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Property Scraper</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="search-band" aria-label="Property search">
+        <div class="brand-row">
+          <div>
+            <p class="eyebrow">Property discovery</p>
+            <h1>Property Scraper</h1>
+          </div>
+          <div class="header-actions">
+            <div class="auth-pill" id="authStatus">Signed in</div>
+            <button id="profileBtn" class="primary-button" style="padding: 0 0.5rem; background: none; color: var(--primary); font-size: 1.25rem;" aria-label="Profile Settings" title="Profile Settings">⚙</button>
+            <a class="logout-link" href="/logout">Sign out</a>
+            <div class="status-pill" id="modePill">Ready</div>
+          </div>
+        </div>
+
+        <form id="searchForm" class="search-form">
+          <div class="location-group">
+            <label class="location-field">
+              <span>Town or postcode</span>
+              <input id="locationInput" name="location" type="search" placeholder="e.g. Leeds, SW1A, M20" autocomplete="postal-code" required />
+            </label>
+            <div class="search-subfilters">
+              <label>
+                <span>Min price</span>
+                <select id="minPrice">
+                  <option value="">No min</option>
+                </select>
+              </label>
+              <label>
+                <span>Max price</span>
+                <select id="maxPrice">
+                  <option value="">No max</option>
+                </select>
+              </label>
+              <label>
+                <span>Min beds</span>
+                <select id="minBeds">
+                  <option value="0">Any</option>
+                  <option value="1">1+</option>
+                  <option value="2">2+</option>
+                  <option value="3">3+</option>
+                  <option value="4">4+</option>
+                  <option value="5">5+</option>
+                </select>
+              </label>
+              <label>
+                <span>Max beds</span>
+                <select id="maxBeds">
+                  <option value="">Any</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </label>
+              <label>
+                <span>Property type</span>
+                <select id="propertyType">
+                  <option value="">Any</option>
+                  <option value="flat">Flat</option>
+                  <option value="house">House</option>
+                  <option value="commercial">Commercial</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <label class="radius-field">
+            <span>Radius</span>
+            <select id="radiusSelect" name="radius">
+              <option value="0">Exact area</option>
+              <option value="1">1 mile</option>
+              <option value="3">3 miles</option>
+              <option value="5" selected>5 miles</option>
+              <option value="10">10 miles</option>
+              <option value="15">15 miles</option>
+              <option value="20">20 miles</option>
+              <option value="30">30 miles</option>
+              <option value="40">40 miles</option>
+            </select>
+          </label>
+
+          <button class="primary-button" type="submit">
+            <span class="button-icon" aria-hidden="true">⌕</span>
+            Search
+          </button>
+        </form>
+
+        <div class="filters-row" aria-label="Search criteria">
+          <label class="chip">
+            <input type="checkbox" name="criteria" value="Reduced" checked />
+            <span>Reduced</span>
+          </label>
+          <label class="chip">
+            <input type="checkbox" name="criteria" value="Cash buyers" checked />
+            <span>Cash buyers</span>
+          </label>
+          <label class="chip">
+            <input type="checkbox" name="criteria" value="Probate" checked />
+            <span>Probate</span>
+          </label>
+          <label class="chip">
+            <input type="checkbox" name="criteria" value="Needs Refurbishment" checked />
+            <span>Needs Refurbishment</span>
+          </label>
+          <label class="chip source-chip">
+            <input type="checkbox" name="source" value="Rightmove" checked />
+            <span>Rightmove</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="results-layout">
+        <aside class="control-panel" aria-label="Scrape controls">
+          <div class="panel-section">
+            <h2>Saved Searches <a href="/manage.html" style="font-size: 0.8rem; font-weight: normal; float: right; margin-top: 4px;">Manage</a></h2>
+            <label class="stacked-input">
+              Telegram notifications
+              <select id="savedNotifyFrequency">
+                <option value="off">Off</option>
+                <option value="now">Now</option>
+                <option value="minutely">Minutely</option>
+                <option value="5min">Every 5 Minutes</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </label>
+            <button id="saveSearchButton" class="apply-button" type="button">
+              Save Current Search
+            </button>
+            <div id="savedSearchStatus" class="saved-search-status">Saved to your signed-in account.</div>
+            <div id="savedSearchList" class="saved-search-list"></div>
+          </div>
+
+          <div class="panel-section">
+            <h2>Scrape Queue</h2>
+            <div class="metric-grid">
+              <div>
+                <span id="resultCount">0</span>
+                <small>matches</small>
+              </div>
+              <div>
+                <span id="sourceCount">1</span>
+                <small>sources</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-section hidden-price-section">
+            <h2>Price</h2>
+            <label class="stacked-input">
+              Min
+              <select id="oldMinPrice">
+                <option value="">No min</option>
+                <option value="50000">£50,000</option>
+                <option value="60000">£60,000</option>
+                <option value="70000">£70,000</option>
+                <option value="80000">£80,000</option>
+                <option value="90000">£90,000</option>
+                <option value="100000">£100,000</option>
+                <option value="110000">£110,000</option>
+                <option value="120000">£120,000</option>
+                <option value="125000">£125,000</option>
+                <option value="130000">£130,000</option>
+                <option value="140000">£140,000</option>
+                <option value="150000">£150,000</option>
+                <option value="160000">£160,000</option>
+                <option value="170000">£170,000</option>
+                <option value="175000">£175,000</option>
+                <option value="180000">£180,000</option>
+                <option value="190000">£190,000</option>
+                <option value="200000">£200,000</option>
+                <option value="210000">£210,000</option>
+                <option value="220000">£220,000</option>
+                <option value="230000">£230,000</option>
+                <option value="240000">£240,000</option>
+                <option value="250000">£250,000</option>
+                <option value="260000">£260,000</option>
+                <option value="270000">£270,000</option>
+                <option value="280000">£280,000</option>
+                <option value="290000">£290,000</option>
+                <option value="300000">£300,000</option>
+                <option value="325000">£325,000</option>
+                <option value="350000">£350,000</option>
+                <option value="375000">£375,000</option>
+                <option value="400000">£400,000</option>
+                <option value="425000">£425,000</option>
+                <option value="450000">£450,000</option>
+                <option value="475000">£475,000</option>
+                <option value="500000">£500,000</option>
+                <option value="550000">£550,000</option>
+                <option value="600000">£600,000</option>
+                <option value="650000">£650,000</option>
+                <option value="700000">£700,000</option>
+                <option value="800000">£800,000</option>
+                <option value="900000">£900,000</option>
+                <option value="1000000">£1,000,000</option>
+                <option value="1250000">£1,250,000</option>
+                <option value="1500000">£1,500,000</option>
+                <option value="1750000">£1,750,000</option>
+                <option value="2000000">£2,000,000</option>
+                <option value="2500000">£2,500,000</option>
+                <option value="3000000">£3,000,000</option>
+                <option value="4000000">£4,000,000</option>
+                <option value="5000000">£5,000,000</option>
+                <option value="7500000">£7,500,000</option>
+                <option value="10000000">£10,000,000</option>
+                <option value="15000000">£15,000,000</option>
+                <option value="20000000">£20,000,000</option>
+              </select>
+            </label>
+            <label class="stacked-input">
+              Max
+              <select id="oldMaxPrice">
+                <option value="">No max</option>
+                <option value="50000">£50,000</option>
+                <option value="60000">£60,000</option>
+                <option value="70000">£70,000</option>
+                <option value="80000">£80,000</option>
+                <option value="90000">£90,000</option>
+                <option value="100000">£100,000</option>
+                <option value="110000">£110,000</option>
+                <option value="120000">£120,000</option>
+                <option value="125000">£125,000</option>
+                <option value="130000">£130,000</option>
+                <option value="140000">£140,000</option>
+                <option value="150000">£150,000</option>
+                <option value="160000">£160,000</option>
+                <option value="170000">£170,000</option>
+                <option value="175000">£175,000</option>
+                <option value="180000">£180,000</option>
+                <option value="190000">£190,000</option>
+                <option value="200000">£200,000</option>
+                <option value="210000">£210,000</option>
+                <option value="220000">£220,000</option>
+                <option value="230000">£230,000</option>
+                <option value="240000">£240,000</option>
+                <option value="250000">£250,000</option>
+                <option value="260000">£260,000</option>
+                <option value="270000">£270,000</option>
+                <option value="280000">£280,000</option>
+                <option value="290000">£290,000</option>
+                <option value="300000">£300,000</option>
+                <option value="325000">£325,000</option>
+                <option value="350000">£350,000</option>
+                <option value="375000">£375,000</option>
+                <option value="400000">£400,000</option>
+                <option value="425000">£425,000</option>
+                <option value="450000">£450,000</option>
+                <option value="475000">£475,000</option>
+                <option value="500000">£500,000</option>
+                <option value="550000">£550,000</option>
+                <option value="600000">£600,000</option>
+                <option value="650000">£650,000</option>
+                <option value="700000">£700,000</option>
+                <option value="800000">£800,000</option>
+                <option value="900000">£900,000</option>
+                <option value="1000000">£1,000,000</option>
+                <option value="1250000">£1,250,000</option>
+                <option value="1500000">£1,500,000</option>
+                <option value="1750000">£1,750,000</option>
+                <option value="2000000">£2,000,000</option>
+                <option value="2500000">£2,500,000</option>
+                <option value="3000000">£3,000,000</option>
+                <option value="4000000">£4,000,000</option>
+                <option value="5000000">£5,000,000</option>
+                <option value="7500000">£7,500,000</option>
+                <option value="10000000">£10,000,000</option>
+                <option value="15000000">£15,000,000</option>
+                <option value="20000000">£20,000,000</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="panel-section">
+            <h2>Source Searches</h2>
+            <div id="locationResolution" class="location-resolution">Enter a location to resolve it on Rightmove.</div>
+            <div id="sourceLinks" class="source-links"></div>
+          </div>
+
+          <button id="applyFiltersButton" class="apply-button" type="button">
+            <span class="button-icon" aria-hidden="true">✓</span>
+            Apply Filters
+          </button>
+        </aside>
+
+        <section class="results-panel" aria-live="polite">
+          <div class="results-toolbar">
+            <div>
+              <p class="eyebrow">Viewed results</p>
+              <h2 id="resultsHeading">Start a search</h2>
+            </div>
+            <select id="sortSelect" aria-label="Sort properties">
+              <option value="relevance">Best match</option>
+              <option value="priceAsc">Price: low to high</option>
+              <option value="priceDesc">Price: high to low</option>
+              <option value="newest">Newest</option>
+            </select>
+          </div>
+
+          <div id="emptyState" class="empty-state">
+            <strong>Search a town or postcode to build a watchlist.</strong>
+            <span>The app will surface listings that mention reduced price, cash buyers, probate, auctions, or similar motivated-sale terms.</span>
+          </div>
+
+          <div id="propertyGrid" class="property-grid"></div>
+        </section>
+      </section>
+    </main>
+
+    <dialog id="profileModal" style="padding: 2rem; border: 1px solid var(--border); border-radius: var(--radius); border: none; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+      <h2>User Profile Config</h2>
+      <p style="margin-bottom: 1rem; color: var(--text-muted);">Set your default Telegram Chat ID to receive alerts for your saved searches.</p>
+      <label class="stacked-input">
+        Telegram Chat ID
+        <input id="profileTelegramChatId" type="text" placeholder="e.g. 1568809920" />
+      </label>
+      <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end;">
+        <button id="closeProfileBtn" class="primary-button" style="background: var(--bg-alt); color: var(--text);">Cancel</button>
+        <button id="saveProfileBtn" class="apply-button" style="width: auto;">Save Settings</button>
+      </div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>

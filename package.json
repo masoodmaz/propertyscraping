@@ -1,0 +1,12 @@
+{
+  "name": "propertyscraping",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local property search app with a Rightmove data connector.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
