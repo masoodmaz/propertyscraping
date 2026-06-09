@@ -82,24 +82,204 @@ function loginPage(message = "") {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sign in - Property Finder</title>
     <style>
-      :root { font-family: Arial, Helvetica, sans-serif; color: #17212b; background: #eef3f6; }
-      body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; }
-      main { width: min(420px, 100%); background: white; border: 1px solid #d8e0e7; border-radius: 8px; box-shadow: 0 20px 60px rgba(35,48,66,.12); padding: 28px; }
-      h1 { margin: 0 0 8px; font-size: 1.7rem; }
-      p { color: #627384; line-height: 1.45; margin: 0 0 22px; }
-      a.button { align-items: center; background: #247a62; border-radius: 8px; color: white; display: flex; font-weight: 800; justify-content: center; min-height: 48px; text-decoration: none; }
-      .notice { background: #f4f7f9; border: 1px solid #d8e0e7; border-radius: 8px; color: #627384; line-height: 1.4; margin-bottom: 14px; padding: 12px; }
-      .error { border-color: #e4b4b4; color: #8a2d2b; }
-      code { color: #17212b; font-weight: 700; }
+      :root {
+        color: #f7fbf9;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #10241f;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      body::before {
+        background:
+          linear-gradient(90deg, rgba(11, 30, 26, 0.92), rgba(11, 30, 26, 0.68) 46%, rgba(11, 30, 26, 0.22)),
+          url("https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1800&q=80") center / cover;
+        content: "";
+        inset: 0;
+        position: fixed;
+        z-index: -2;
+      }
+
+      body::after {
+        background: rgba(0, 0, 0, 0.18);
+        content: "";
+        inset: 0;
+        position: fixed;
+        z-index: -1;
+      }
+
+      main {
+        display: grid;
+        min-height: 100vh;
+        padding: 32px clamp(20px, 6vw, 76px);
+      }
+
+      .landing {
+        align-content: center;
+        display: grid;
+        gap: 30px;
+        max-width: 760px;
+      }
+
+      .brand {
+        align-items: center;
+        display: inline-flex;
+        gap: 12px;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+
+      .mark {
+        align-items: center;
+        background: #d9f99d;
+        border-radius: 8px;
+        color: #10241f;
+        display: inline-flex;
+        font-weight: 900;
+        height: 42px;
+        justify-content: center;
+        width: 42px;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 6vw, 5.8rem);
+        letter-spacing: 0;
+        line-height: 0.95;
+        margin: 0;
+        max-width: 720px;
+      }
+
+      .lead {
+        color: rgba(247, 251, 249, 0.86);
+        font-size: clamp(1.05rem, 2vw, 1.28rem);
+        line-height: 1.55;
+        margin: 0;
+        max-width: 640px;
+      }
+
+      .actions {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      a.button {
+        align-items: center;
+        background: #f7fbf9;
+        border-radius: 8px;
+        color: #10241f;
+        display: inline-flex;
+        font-weight: 900;
+        gap: 12px;
+        min-height: 54px;
+        padding: 0 22px;
+        text-decoration: none;
+      }
+
+      .google {
+        align-items: center;
+        background: white;
+        border-radius: 50%;
+        color: #4285f4;
+        display: inline-flex;
+        font-weight: 900;
+        height: 28px;
+        justify-content: center;
+        width: 28px;
+      }
+
+      .trust {
+        color: rgba(247, 251, 249, 0.72);
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+
+      .feature-row {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        max-width: 720px;
+      }
+
+      .feature {
+        border-left: 3px solid #d9f99d;
+        color: rgba(247, 251, 249, 0.82);
+        line-height: 1.4;
+        padding-left: 14px;
+      }
+
+      .feature strong {
+        color: #ffffff;
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .notice {
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 8px;
+        color: #385047;
+        line-height: 1.4;
+        max-width: 640px;
+        padding: 12px 14px;
+      }
+
+      .error {
+        border-color: #f7c4c4;
+        color: #8a2d2b;
+      }
+
+      code {
+        color: #10241f;
+        font-weight: 800;
+      }
+
+      @media (max-width: 760px) {
+        body::before {
+          background:
+            linear-gradient(180deg, rgba(11, 30, 26, 0.94), rgba(11, 30, 26, 0.76)),
+            url("https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1100&q=80") center / cover;
+        }
+
+        main {
+          padding: 24px 18px;
+        }
+
+        .feature-row {
+          grid-template-columns: 1fr;
+        }
+
+        a.button {
+          justify-content: center;
+          width: 100%;
+        }
+      }
     </style>
   </head>
   <body>
     <main>
-      <h1>Sign in</h1>
-      <p>Use your Google account to access Property Finder.</p>
-      ${setupMessage}
-      ${messageHtml}
-      <a class="button" href="/auth/google">Continue with Google</a>
+      <section class="landing" aria-label="Property Finder sign in">
+        <div class="brand"><span class="mark">PF</span><span>Property Finder</span></div>
+        <h1>Find motivated property opportunities faster.</h1>
+        <p class="lead">Search Rightmove listings by location, radius, price, bedrooms, and buying signals like cash buyers, probate, and reduced properties. Save searches and receive Telegram alerts when new matches appear.</p>
+        ${setupMessage}
+        ${messageHtml}
+        <div class="actions">
+          <a class="button" href="/auth/google"><span class="google">G</span> Continue with Google</a>
+          <span class="trust">Private access for approved accounts only</span>
+        </div>
+        <div class="feature-row" aria-label="App highlights">
+          <div class="feature"><strong>Focused search</strong>Location, radius, price, beds, and property type in one workflow.</div>
+          <div class="feature"><strong>Deal signals</strong>Filter for reduced, cash buyer, probate, and refurbishment language.</div>
+          <div class="feature"><strong>Saved alerts</strong>Store criteria and get Telegram notifications on your schedule.</div>
+        </div>
+      </section>
     </main>
   </body>
 </html>`;
