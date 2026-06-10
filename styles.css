@@ -129,7 +129,7 @@ h1 {
 .search-subfilters {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(5, minmax(110px, 1fr));
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
 }
 
 .hidden-price-section {
@@ -166,6 +166,7 @@ h1 {
 .search-form input:focus,
 .search-form select:focus,
 .control-panel input:focus,
+.control-panel select:focus,
 .results-toolbar select:focus {
   border-color: var(--green);
   box-shadow: 0 0 0 3px rgba(36, 122, 98, 0.18);
