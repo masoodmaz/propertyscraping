@@ -122,11 +122,8 @@ function renderSearches(searches) {
         </label>
         <select class="select-schedule" data-id="${search.id}" ${!isNotifying ? "disabled" : ""}>
           <option value="now" ${currentFreq === "now" ? "selected" : ""}>Now</option>
-          <option value="minutely" ${currentFreq === "minutely" ? "selected" : ""}>Minutely</option>
-          <option value="5min" ${currentFreq === "5min" ? "selected" : ""}>Every 5 Minutes</option>
           <option value="daily" ${currentFreq === "daily" ? "selected" : ""}>Daily</option>
           <option value="weekly" ${currentFreq === "weekly" ? "selected" : ""}>Weekly</option>
-          <option value="monthly" ${currentFreq === "monthly" ? "selected" : ""}>Monthly</option>
         </select>
         <span class="status-indicator" id="status-${search.id}" style="font-size:0.8rem; color: green; margin-left: auto;"></span>
       </div>

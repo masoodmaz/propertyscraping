@@ -329,7 +329,7 @@ async function saveSavedSearches(searches) {
 function cleanSavedSearch(body) {
   const location = String(body.location || "").trim();
   if (!location) throw new Error("Location is required before saving a search.");
-  const notifyFrequency = ["off", "now", "minutely", "5min", "daily", "weekly", "monthly"].includes(String(body.notifyFrequency))
+  const notifyFrequency = ["off", "now", "daily", "weekly"].includes(String(body.notifyFrequency))
     ? String(body.notifyFrequency)
     : "off";
   const telegramChatId = String(body.telegramChatId || "").trim();
@@ -801,18 +801,15 @@ async function checkSubscriptions() {
 }
 
 function notificationDue(search, now = new Date()) {
-  if (!["minutely", "5min", "daily", "weekly", "monthly"].includes(search.notifyFrequency)) return false;
+  if (!["daily", "weekly"].includes(search.notifyFrequency)) return false;
   if (!search.lastNotifiedAt) return true;
 
   const last = new Date(search.lastNotifiedAt);
   const elapsedMs = now.getTime() - last.getTime();
   const dayMs = 24 * 60 * 60 * 1000;
   
-  if (search.notifyFrequency === "minutely") return elapsedMs >= 60 * 1000; // 1 minute
-  if (search.notifyFrequency === "5min") return elapsedMs >= 5 * 60 * 1000; // 5 minutes
   if (search.notifyFrequency === "daily") return elapsedMs >= dayMs;
   if (search.notifyFrequency === "weekly") return elapsedMs >= 7 * dayMs;
-  if (search.notifyFrequency === "monthly") return elapsedMs >= 30 * dayMs; // Approximate a month as 30 days
   return false;
 }
 
@@ -838,7 +835,7 @@ async function checkSavedSearchNotifications() {
   if (updated) await saveSavedSearches(searches);
 }
 
-// Run the background checker every 1 minute (60000ms) for testing and quick minutely alerts
+// Run background checks every minute; saved searches decide whether daily/weekly notifications are due.
 setInterval(checkSubscriptions, 60000);
 setInterval(checkSavedSearchNotifications, 60000);
 
