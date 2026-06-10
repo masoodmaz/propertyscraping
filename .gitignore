@@ -16,3 +16,11 @@ infra/**/*.tfstate
 infra/**/*.tfstate.*
 infra/**/terraform.tfvars
 infra/**/terraform.tfvars.json
+infra/aws-lightsail/main.tf
+infra/aws-lightsail/outputs.tf
+infra/aws-lightsail/README.md
+infra/aws-lightsail/terraform.tfvars.example
+infra/aws-lightsail/variables.tf
+infra/aws-lightsail/templates/user-data.sh.tftpl
+infra/oracle/manual/README.md
+infra/oracle/manual/oracle-linux-deploy.sh
